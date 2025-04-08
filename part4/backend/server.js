@@ -4,7 +4,7 @@ import 'dotenv/config';
 import connectDB from './config/mongoodb.js';
 import providerRouter from './routes/providerRoute.js';
 import shopRouter from './routes/shopRoute.js';
-import { checkInventoryAndOrder } from './jobs/inventoryChecker.js'; 
+import { startInventoryChecker } from './jobs/inventoryChecker.js'; 
 
 // app config
 const app = express();
@@ -27,5 +27,5 @@ app.get('/', (req, res) => {
 
 
 app.listen(port, () => {
-  checkInventoryAndOrder(); 
+  startInventoryChecker(); 
 });

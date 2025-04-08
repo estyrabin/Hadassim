@@ -1,6 +1,8 @@
 import InventoryModel from '../models/InventoryModels.js';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import cron from 'node-cron';
+
 
 const backendUrl = process.env.BACKEND_URL;
 let sToken = null;
@@ -28,7 +30,7 @@ async function checkInventoryAndOrder() {
     
         for (const product of inventoryProducts) {
             
-            if(product.amount < product.min && product.pendingOrder){
+            if(product.amount < product.min && !product.pendingOrder){
 
                 let orderAamount  =  product.min * 2 - product.amount;
                 const providersArray = Array.from(product.providers, ([name, details]) => ({
@@ -75,12 +77,14 @@ async function newOrder(product, amount, providerName) {
     try{
         const orderProducts = new Map();
         orderProducts.set(product,amount);
+        const orderItemsObject = Object.fromEntries(orderProducts);
     
         const response = await axios.post(
             `${backendUrl}/api/shop/new-order`,
-            { companyName: providerName, products: orderProducts },
+            { companyName: providerName, products: orderItemsObject },
             { headers: { token: sToken} }
         );
+
     
         console.log(`Order request sent for ${product}: ${amount}  from ${providerName}`);
         return response.data;
@@ -98,4 +102,4 @@ function startInventoryChecker() {
 }
 
 
-export {checkInventoryAndOrder };
+export {startInventoryChecker };

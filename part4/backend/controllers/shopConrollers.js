@@ -263,10 +263,12 @@ const customerOrder = async (req, res) => {
       const product_amount = product.amount;
 
       if (numericAmount > product_amount) {
-         res.status(400).json({
+         return res.status(400).json({
           success: false,
           message: `There is ${product_amount} ${productName} available`,
         });
+
+        
       }
 
       const updatedProduct = await InventoryModel.findOneAndUpdate(

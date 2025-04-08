@@ -37,7 +37,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate products
+
     const isProductsValid = products.every(
       (product) => product.name && product.price && product.minOrder
     );
@@ -56,7 +56,6 @@ const SignUp = () => {
         localStorage.setItem('ptoken', response.data.token);
         setPToken(response.data.token);
         toast.success(response.data.message);
-        //navigate('/');
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'An error occurred');
@@ -148,7 +147,7 @@ const SignUp = () => {
               <div key={index} className="flex items-center space-x-4 mb-2">
                 <input
                   type="text"
-                  placeholder="Product Name"
+                  placeholder="Name"
                   value={product.name || ''}
                   onChange={(e) => handleProductsChange(index, 'name', e.target.value)}
                   className="mt-1 block w-1/3 px-4 py-2 border rounded-lg shadow-sm focus:ring-primary focus:border-primary"
